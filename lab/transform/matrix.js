@@ -144,7 +144,7 @@ class Matrix
 		target[10]=vector.z;
 		target[15] = 1;
 		target[1]=target[2]=target[3]=target[4]=
-			target[5]=target[6]=target[7]=target[8]=target[9]=
+			target[6]=target[7]=target[8]=target[9]=
 			target[11]=target[12]=target[13]=target[14]=0;
 		return target;
 	}
