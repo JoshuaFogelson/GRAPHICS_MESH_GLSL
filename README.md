@@ -44,6 +44,7 @@ You will need to go through the following tasks:
 	* Create the files `vert.uniform.glsl` abd `frag.uniform.glsl` in the `shaders` folder.
 	* Add these files to the imported text assets at the bottom of `demo.js`.
 	* Search for the `createShader` call in `demo.js` which compiles and links the `rgbShader`. Add another call to `createShader` which compiles and links your new shader.
+	* Add your new shader to the `shaders` list, which currently only includes the `rgbShader`. Otherwise, it won't be updated with the camera and light settings defined for the `rgbShader` in the demo.
 	* Create and implement the `UniformColorMesh` class, either in its own file or in one of the already existing files in the `mesh` directory. If you create a new file, don't forget to add a line to `index.html` to include it. `UniformColorMesh` is to `Mesh` as `UniformColorDrawable` is to `Drawable`. This class should be very short.
 	* Replace the `new Mesh(...)` call which creates the `meshCube` variable with a call to `new UniformColorMesh(...)` to instantiate your new class. Don't forget to adjust the arguments to include your new cube's color.
 	* Once you have two cubes (the one with red, green and blue faces, and your solid colored one) orbitting, you're done!

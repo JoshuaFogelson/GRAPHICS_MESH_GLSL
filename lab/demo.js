@@ -36,6 +36,12 @@ var RunDemo = function (filemap)
 		filemap['rgbVertexShaderText'],
 		filemap['rgbFragShaderText']
 	);
+	
+	var shaders = [
+		rgbShader
+		// if you make more shaders, add them to this list so they'll
+		// get the camera and lighting settings defined below
+	];
 
 	// set up view matrix
 	var viewMatrix = new Float32Array(16);
@@ -48,11 +54,6 @@ var RunDemo = function (filemap)
 		lookAtPosition,   // what point is the camera looking at
 		cameraUpDirection // which direction is upward from the cameras PoV
 	);
-
-	// apply view matrix to corresponding location in shader
-	gl.useProgram(rgbShader);
-	var matViewUniformLocation = gl.getUniformLocation(rgbShader, 'mView');
-	gl.uniformMatrix4fv(matViewUniformLocation, gl.FALSE, viewMatrix);
 
 	// set up (perspective) projection matrix
 	var projMatrix = new Float32Array(16);
@@ -67,21 +68,35 @@ var RunDemo = function (filemap)
 		near,        // distance to near clip plane
 		far          // distance to far clip plane
 	);
-	var matProjUniformLocation = gl.getUniformLocation(rgbShader, 'mProj');
-	gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
 
 	// set ambient light
 	var ambientLight = [0.2, 0.3, 0.2];
-	var ambientLightUniformLocation = gl.getUniformLocation(rgbShader, 'ambientLight');
-	gl.uniform3fv(ambientLightUniformLocation, ambientLight);
 
 	// set up directional light
 	var lightDirection = [1, -1, -0.25];
 	var lightIntensity = [0.9, 0.8, 0.6];
-	var lightDirectionUniformLocation = gl.getUniformLocation(rgbShader, 'lightDirection');
-	var lightIntensityUniformLocation = gl.getUniformLocation(rgbShader, 'lightIntensity');
-	gl.uniform3fv(lightDirectionUniformLocation, lightDirection);
-	gl.uniform3fv(lightIntensityUniformLocation, lightIntensity);
+
+	// apply view, projection and lighting to shaders
+	for (var i = 0; i < shaders.length; i++)
+	{
+		var shader = shaders[i];
+
+		gl.useProgram(shader);
+
+		var matViewUniformLocation = gl.getUniformLocation(shader, 'mView');
+		gl.uniformMatrix4fv(matViewUniformLocation, gl.FALSE, viewMatrix);
+
+		var matProjUniformLocation = gl.getUniformLocation(shader, 'mProj');
+		gl.uniformMatrix4fv(matProjUniformLocation, gl.FALSE, projMatrix);
+	
+		var ambientLightUniformLocation = gl.getUniformLocation(shader, 'ambientLight');
+		gl.uniform3fv(ambientLightUniformLocation, ambientLight);
+
+		var lightDirectionUniformLocation = gl.getUniformLocation(shader, 'lightDirection');
+		var lightIntensityUniformLocation = gl.getUniformLocation(shader, 'lightIntensity');
+		gl.uniform3fv(lightDirectionUniformLocation, lightDirection);
+		gl.uniform3fv(lightIntensityUniformLocation, lightIntensity);
+	}
 
 	// set up position array for cube
 	// recall, we are in a right-handed space.
